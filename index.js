@@ -40,10 +40,10 @@ if (process.env.S3_ENABLE) {
 }
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
+  databaseURI: databaseUri || 'mongodb://heroku_jt8cxgwh:qjpu65d8gh1fndf311egdhmrma@ds051553.mlab.com:51553/heroku_jt8cxgwh',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'myAppId',
-  masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
+  appId: process.env.APP_ID || 'FBUDisturb',
+  masterKey: process.env.MASTER_KEY || 'masterKey', //Add your master key here. Keep it secret!
   push: pushConfig,
   filesAdapter: filesAdapter,
   serverURL: process.env.SERVER_URL || 'http://fbudisturb.herokuapp.com/parse/'  // needed for Parse Cloud and push notifications
