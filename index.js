@@ -13,8 +13,8 @@ if (!databaseUri) {
 var pushConfig = {};
 
 if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
-    pushConfig['android'] = { senderId: process.env.GCM_SENDER_ID || '',
-                              apiKey: process.env.GCM_API_KEY || ''};
+    pushConfig['android'] = { senderId: process.env.GCM_SENDER_ID || '724636590290',
+                              apiKey: process.env.GCM_API_KEY || 'AIzaSyAMCt9pJ-_PwZTFXYFTV7ks21IwsT4KSAs'};
 }
 
 if (process.env.APNS_ENABLE) {
@@ -46,7 +46,7 @@ var api = new ParseServer({
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
   push: pushConfig,
   filesAdapter: filesAdapter,
-  serverURL: process.env.SERVER_URL || 'http://localhost/parse'  // needed for Parse Cloud and push notifications
+  serverURL: process.env.SERVER_URL || 'http://fbudisturb.herokuapp.com/parse/'  // needed for Parse Cloud and push notifications
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
