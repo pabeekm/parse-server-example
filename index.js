@@ -13,8 +13,8 @@ if (!databaseUri) {
 var pushConfig = {};
 
 if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
-    pushConfig['android'] = { senderId: process.env.GCM_SENDER_ID || '724636590290',
-                              apiKey: process.env.GCM_API_KEY || 'AIzaSyAMCt9pJ-_PwZTFXYFTV7ks21IwsT4KSAs'};
+    pushConfig['android'] = { senderId: '724636590290',
+                              apiKey: 'AIzaSyAMCt9pJ-_PwZTFXYFTV7ks21IwsT4KSAs'};
 }
 
 if (process.env.APNS_ENABLE) {
@@ -41,12 +41,12 @@ if (process.env.S3_ENABLE) {
 
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://heroku_jt8cxgwh:qjpu65d8gh1fndf311egdhmrma@ds051553.mlab.com:51553/heroku_jt8cxgwh',
-  cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'FBUDisturb',
-  masterKey: process.env.MASTER_KEY || 'masterKey', //Add your master key here. Keep it secret!
+  cloud:  __dirname + '/cloud/main.js',
+  appId: 'FBUDisturb',
+  masterKey: 'masterKey', //Add your master key here. Keep it secret!
   push: pushConfig,
   filesAdapter: filesAdapter,
-  serverURL: process.env.SERVER_URL || 'http://fbudisturb.herokuapp.com/parse/'  // needed for Parse Cloud and push notifications
+  serverURL: 'http://fbudisturb.herokuapp.com/parse/'  // needed for Parse Cloud and push notifications
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
