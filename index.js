@@ -46,7 +46,7 @@ var api = new ParseServer({
   masterKey: 'masterKey', //Add your master key here. Keep it secret!
   push: pushConfig,
   filesAdapter: filesAdapter,
-  serverURL: 'http://fbudisturb.herokuapp.com/parse/'  // needed for Parse Cloud and push notifications
+  serverURL: 'http://fbudisturb.herokuapp.com/parse'  // needed for Parse Cloud and push notifications
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
