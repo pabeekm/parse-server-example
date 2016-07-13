@@ -29,9 +29,10 @@ Parse.Cloud.define('pushChannelTest', function(request, response) {
   }
 
   // Note that useMasterKey is necessary for Push notifications to succeed.
-
+  var pushId = cryptoUtils.newObjectId();
   Parse.Push.send({
   where: pushQuery,      // for sending to a specific channel
+  pushId: pushId,
   data: {
     alert: 'Test',
     badge: 1,
