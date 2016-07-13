@@ -21,7 +21,7 @@ Parse.Cloud.define('pushChannelTest', function(request, response) {
     title: 'Hello, world',
     badge: 1,
     sound: 'default'
-  }
+  },
   }, { success: function() {
      console.log("#### PUSH OK");
   }, error: function(error) {
