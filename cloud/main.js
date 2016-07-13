@@ -18,6 +18,7 @@ Parse.Cloud.define('pushChannelTest', function(request, response) {
   where: pushQuery,      // for sending to a specific channel
   data: {
     alert: 'Test',
+    title: 'Hello, world',
     badge: 1,
     sound: 'default'
   }
