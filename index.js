@@ -45,6 +45,7 @@ var api = new ParseServer({
   appId: 'FBUDisturb',
   masterKey: 'masterKey', //Add your master key here. Keep it secret!
   push: pushConfig,
+  verbose: true,
   filesAdapter: filesAdapter,
   serverURL: 'http://fbudisturb.herokuapp.com/parse'  // needed for Parse Cloud and push notifications
 });
