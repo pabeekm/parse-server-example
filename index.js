@@ -14,7 +14,7 @@ var pushConfig = {};
 
 if (process.env.GCM_SENDER_ID && process.env.GCM_API_KEY) {
     pushConfig['android'] = { senderId: '835102281147',
-                              apiKey: 'AIzaSyDNkHTE83GAPHQ2vgCD0Zh0pTc685U8_8U'};
+                              apiKey: 'AIzaSyBcuHvDlFBzuotZWAZqwOxDWgSvJX5hSU4'};
 }
 
 if (process.env.APNS_ENABLE) {
