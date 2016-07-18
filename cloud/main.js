@@ -43,7 +43,7 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
 
   // Query constraints
   var pushQuery = new Parse.Query(Parse.User);
-  pushQuery.withinMiles("geoPoint", startPoint, distance);
+  pushQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
 
   Parse.Push.send({
   where: pushQuery,     
