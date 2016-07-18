@@ -27,7 +27,7 @@ Parse.Cloud.define('spamAllUsers', function(request, response) {
 });
 
 // Push to all users in range
-Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
+/*Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   
   var params = request.params;
   var user = request.user;
@@ -61,7 +61,7 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   }, useMasterKey: true});
 
   response.success('success');
-});
+});*/
 
 // Convert a string "lat, lang", into a GeoPoint object and assign it to the user.
 Parse.Cloud.define('assignGeoPoint', function(request, response) {
