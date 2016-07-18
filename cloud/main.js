@@ -33,6 +33,7 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   var user = request.user;
   var message = params.message;
   var title = params.title;
+  var distance = params.distance;
   
   // Defining the start point of the distance query
   var start = params.start;
@@ -42,7 +43,7 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
 
   // Query constraints
   var pushQuery = new Parse.Query(Parse.User);
-  pushQuery.withinMiles("geoPoint", startPoint, 1);
+  pushQuery.withinMiles("geoPoint", startPoint, distance);
 
   Parse.Push.send({
   where: pushQuery,     
@@ -73,4 +74,6 @@ Parse.Cloud.define('assignGeoPoint', function(request, response) {
   
   user.set("geoPoint", point);
   user.save(null, {useMasterKey:true});
+  
+  response.success('success');
 });
