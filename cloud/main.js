@@ -75,5 +75,8 @@ Parse.Cloud.define('assignGeoPoint', function(request, response) {
   
   user.set("geoPoint", point);
   user.save(null, {useMasterKey:true});
+  ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+  installation.put("user",ParseUser.getCurrentUser());
+  installation.saveInBackground();
   response.success('success');
 });
