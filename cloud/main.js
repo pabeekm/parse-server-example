@@ -44,7 +44,7 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   // Query constraints
   var userQuery = new Parse.Query(Parse.User);
   userQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
-  ParseQuery pushQuery = ParseInstallation.getQuery();
+  var pushQuery = new Parse.Query(Parse.Installation);
   pushQuery.whereMatchesQuery("user", userQuery);
   Parse.Push.send({
   where: pushQuery,     
@@ -75,8 +75,5 @@ Parse.Cloud.define('assignGeoPoint', function(request, response) {
   
   user.set("geoPoint", point);
   user.save(null, {useMasterKey:true});
-  ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-  installation.put("user",ParseUser.getCurrentUser());
-  installation.saveInBackground();
   response.success('success');
 });
