@@ -43,7 +43,7 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
 
   // Query constraints
   var pushQuery = new Parse.Query(Parse.User);
-  pushQuery.withinMiles("location", startPoint, 1);
+  pushQuery.withinMiles("geoPoint", startPoint, 1);
 
   Parse.Push.send({
   where: pushQuery,     
@@ -62,3 +62,15 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   response.success('success');
 });
 
+// Convert a string "lat, lang", into a GeoPoint object and assign it to the user.
+Parse.Cloud.define('assignGeoPoint', function(request, response) {
+  var params = request.params;
+  var user = request.user;
+  
+  var latlangString = params.latlangString;
+  var lat = parseFloat(latlangString.substring(latlangString.indexOf(",") + 1));
+  var lon = parseFloat(latlangString.substring(0, latlangString.indexOf(",")));
+  var point = new Parse.GeoPoint(lat, lon);
+  
+  user.add("geoPoint", point);
+});
