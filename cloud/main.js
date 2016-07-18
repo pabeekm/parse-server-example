@@ -68,9 +68,9 @@ Parse.Cloud.define('assignGeoPoint', function(request, response) {
   var params = request.params;
   var user = request.user;
   
-  var latlangString = params.latlangString;
-  var lat = parseFloat(latlangString.substring(latlangString.indexOf(",") + 1));
-  var lon = parseFloat(latlangString.substring(0, latlangString.indexOf(",")));
+  var latlongString = params.latlongString;
+  var lat = parseFloat(latlongString.substring(latlongString.indexOf(",") + 1));
+  var lon = parseFloat(latlongString.substring(0, latlongString.indexOf(",")));
   var point = new Parse.GeoPoint(lat, lon);
   
   user.set("geoPoint", point);
