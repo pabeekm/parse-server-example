@@ -72,5 +72,5 @@ Parse.Cloud.define('assignGeoPoint', function(request, response) {
   var point = new Parse.GeoPoint(lat, lon);
   
   user.set("geoPoint", point);
-  user.save();
+  user.save(null, {useMasterKey:true});
 });
