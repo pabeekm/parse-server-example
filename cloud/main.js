@@ -9,7 +9,6 @@ Parse.Cloud.define('spamAllUsers', function(request, response) {
   // Query constraints
   var pushQuery = new Parse.Query(Parse.Installation);
   pushQuery.equalTo("deviceType", "android");
-  
   Parse.Push.send({
   where: pushQuery,     
   data: {
