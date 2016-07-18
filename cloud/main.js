@@ -42,10 +42,10 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   var startPoint = new Parse.GeoPoint(lat, lon);
 
   // Query constraints
-  var pushQuery = new Parse.Query(Parse.User);
-  pushQuery.equalTo("deviceType", "android");
-  pushQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
-
+  var userQuery = new Parse.Query(Parse.User);
+  userQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
+  ParseQuery pushQuery = ParseInstallation.getQuery();
+  pushQuery.whereMatchesQuery("user", userQuery);
   Parse.Push.send({
   where: pushQuery,     
   data: {
@@ -75,6 +75,8 @@ Parse.Cloud.define('assignGeoPoint', function(request, response) {
   
   user.set("geoPoint", point);
   user.save(null, {useMasterKey:true});
-  
+  ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+  installation.put("user",ParseUser.getCurrentUser());
+  installation.saveInBackground();
   response.success('success');
 });
