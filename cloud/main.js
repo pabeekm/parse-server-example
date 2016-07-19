@@ -77,3 +77,10 @@ Parse.Cloud.define('assignGeoPoint', function(request, response) {
   user.save(null, {useMasterKey:true});
   response.success('success');
 });
+
+Parse.Cloud.define("getServerTime", function(request, response) {
+    var dateToday = new Date();
+    response.success(dateToday.toDateString());
+});
+
+
