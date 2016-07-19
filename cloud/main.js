@@ -37,8 +37,8 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   
   // Defining the start point of the distance query
   var start = params.start;
-  var lat = parseFloat(start.substring(start.indexOf(",") + 1));
-  var lon = parseFloat(start.substring(0, start.indexOf(",")));
+  var lon = parseFloat(start.substring(start.indexOf(",") + 1));
+  var lat = parseFloat(start.substring(0, start.indexOf(",")));
   var startPoint = new Parse.GeoPoint(lat, lon);
 
   // Query constraints
