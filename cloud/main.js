@@ -79,8 +79,12 @@ Parse.Cloud.define('assignGeoPoint', function(request, response) {
 });
 
 Parse.Cloud.define("getServerTime", function(request, response) {
-    var dateToday = new Date();
-    response.success(Date.now());
+    var params = request.params;
+    var user = request.user;
+    var duration = params.duration;
+    var endTime = Date.now() + parseFloat(duration);
+    user.set("endTime", endTime);
+    response.success("success");
 });
 
 
