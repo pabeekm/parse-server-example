@@ -97,7 +97,7 @@ Parse.Cloud.define("getEndTime", function(request, response) {
     success: function(results) {
       alert("Successfully retrieved " + results.toString());
       
-    }
+    },
     error: function(error){
       alert("Error: " + error.code + " " + error.message);
     }
