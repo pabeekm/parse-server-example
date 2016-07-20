@@ -81,10 +81,29 @@ Parse.Cloud.define('assignGeoPoint', function(request, response) {
 Parse.Cloud.define("getServerTime", function(request, response) {
     var params = request.params;
     var user = request.user;
-    var duration = params.duration;
-    var endTime = Date.now() + parseFloat(duration);
-    user.set("endTime", endTime);
+    user.set("currTime", Date.now());
     response.success("success");
 });
 
+Parse.Cloud.define("getEndTime", function(request, response) {
+    var params = request.params;
+    var duration = calculateDuration(params.duration);
+    var currTime = Date.now();
+    var endTime = calculateEnd(currTime, duration);
+    return endTime;
+});
+
+function calculateDuration(duration){
+  var num = parseInt(duration.subString(0, duration.indexOf(" ")));
+  if(duration.charAt(duration.indexOf(" ") + 1) == "M"){
+    return num * 60000;
+  }
+  else{
+    return num * 3600000;
+  }
+}
+
+function calculateEnd(currTime, duration){
+  return currTime + duration;
+}
 
