@@ -96,13 +96,13 @@ Parse.Cloud.define("getEndTime", function(request, response) {
   eventQuery.equalTo("FBid", request.user.get("FBid"));
   eventQuery.first({
     success: function(object) {
-      alert("Successfully retrieved " + object.toString());
+      console.log("Successfully retrieved " + object.toString());
       var ev = object;
       ev.set("endTime", endTime);
       ev.save(null, {useMasterKey:true});
     },
     error: function(error){
-      alert("Error: " + error.code + " " + error.message);
+      console.log("Error: " + error.code + " " + error.message);
     }
   });
   response.success(endTime + "");
