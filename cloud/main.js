@@ -91,6 +91,17 @@ Parse.Cloud.define("getEndTime", function(request, response) {
   var duration = calculateDuration(params.duration);
   var currTime = Date.now();
   var endTime = calculateEnd(currTime, duration);
+  var eventQuery = Parse.Query(Event);
+  eventQuery.equalTo("FBid", request.user.get("FBid"));
+  eventQuery.find({
+    success: function(results) {
+      alert("Successfully retrieved " + results.toString());
+      
+    }
+    error: function(error){
+      alert("Error: " + error.code + " " + error.message);
+    }
+  });
   response.success(endTime + "");
 });
 
