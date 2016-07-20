@@ -94,7 +94,7 @@ Parse.Cloud.define("getEndTime", function(request, response) {
 });
 
 function calculateDuration(duration){
-  var num = parseInt(duration.subString(0, duration.indexOf(" ")));
+  var num = parseInt(duration.substring(0, duration.indexOf(" ")));
   if(duration.charAt(duration.indexOf(" ") + 1) == "M"){
     return num * 60000;
   }
