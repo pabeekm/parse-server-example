@@ -90,7 +90,7 @@ Parse.Cloud.define("getEndTime", function(request, response) {
     var duration = calculateDuration(params.duration);
     var currTime = Date.now();
     var endTime = calculateEnd(currTime, duration);
-    return endTime;
+    response.success(endTime + "");
 });
 
 function calculateDuration(duration){
