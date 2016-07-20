@@ -91,6 +91,7 @@ Parse.Cloud.define("getEndTime", function(request, response) {
   var duration = calculateDuration(params.duration);
   var currTime = Date.now();
   var endTime = calculateEnd(currTime, duration);
+  var Event = Parse.Object.extend("Event");
   var eventQuery = new Parse.Query(Event);
   eventQuery.equalTo("FBid", request.user.get("FBid"));
   eventQuery.find({
