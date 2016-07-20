@@ -97,9 +97,8 @@ Parse.Cloud.define("getEndTime", function(request, response) {
   eventQuery.first({
     success: function(object) {
       console.log("Successfully retrieved " + object.toString());
-      var ev = object;
-      ev.set("endTime", endTime);
-      ev.save(null, {useMasterKey:true});
+      object.set("endTime", endTime);
+      object.save();
     },
     error: function(error){
       console.log("Error: " + error.code + " " + error.message);
