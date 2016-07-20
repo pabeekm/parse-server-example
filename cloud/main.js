@@ -94,10 +94,10 @@ Parse.Cloud.define("getEndTime", function(request, response) {
   var Event = Parse.Object.extend("Event");
   var eventQuery = new Parse.Query(Event);
   eventQuery.equalTo("FBid", request.user.get("FBid"));
-  eventQuery.find({
-    success: function(results) {
-      alert("Successfully retrieved " + results.toString());
-      var ev = results[0];
+  eventQuery.first({
+    success: function(object) {
+      alert("Successfully retrieved " + object.toString());
+      var ev = object;
       ev.set("endTime", endTime);
       ev.save(null, {useMasterKey:true});
     },
