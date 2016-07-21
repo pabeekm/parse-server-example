@@ -63,6 +63,21 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   response.success('success');
 });
 
+// Push to all users in range
+Parse.Cloud.define('scheduleNeutralEvent', function(request, response) {
+  
+  var params = request.params;
+  var user = request.user;
+  var duration = params.duration;
+  var kue = require( 'kue' );
+  // create our job queue
+  var jobs = kue.createQueue();
+
+
+  response.success('success');
+});
+
+
 // Convert a string "lat, long", into a GeoPoint object and assign it to the user.
 Parse.Cloud.define('assignGeoPoint', function(request, response) {
   var params = request.params;
