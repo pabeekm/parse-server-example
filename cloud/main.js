@@ -65,7 +65,6 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
 
 // Push to all users in range
 Parse.Cloud.define('scheduleNeutralEvent', function(request, response) {
-  var kue = require('kue');
   var params = request.params;
   var user = request.user;
   var duration = params.duration;
