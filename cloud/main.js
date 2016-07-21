@@ -121,3 +121,7 @@ function calculateEnd(currTime, duration){
   return currTime + duration;
 }
 
+function millisToMin(endTime, currTime){
+  var timeLeft = endTime - currTime;
+  return timeLeft / 60000;
+}
