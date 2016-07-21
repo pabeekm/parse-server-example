@@ -14,7 +14,7 @@
     "parse": "~1.8.0",
     "parse-server": "~2.2.16",
     "kue": "~0.10.x",
-    "redis": "~2.6.12"
+    "redis": "~2.6.2"
   },
   "scripts": {
     "start": "node index.js"
