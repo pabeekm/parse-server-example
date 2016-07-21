@@ -28,8 +28,8 @@ Parse.Cloud.define('spamAllUsers', function(request, response) {
 
 // Push to all users in range
 Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
-  spamAllUsersInRange(request, response);
-  setInterval(spamAllUsersInRange, 10000);
+  spammer = spamAllUsersInRange(request, response);
+  setInterval(spammer, 10000);
 });
 
 // Push to all users in range
