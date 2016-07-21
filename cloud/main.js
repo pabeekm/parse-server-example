@@ -98,6 +98,7 @@ Parse.Cloud.define("getEndTime", function(request, response) {
     success: function(object) {
       console.log("Successfully retrieved " + object.toString());
       object.set("endTime", endTime);
+      object.set("duration", duration)
       object.save();
     },
     error: function(error){
@@ -105,6 +106,10 @@ Parse.Cloud.define("getEndTime", function(request, response) {
     }
   });
   response.success(endTime + "");
+});
+
+Parse.Cloud.define("setTimeLeft", function(request, response){
+  var params = request.params
 });
 
 function calculateDuration(duration){
