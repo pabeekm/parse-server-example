@@ -28,39 +28,8 @@ Parse.Cloud.define('spamAllUsers', function(request, response) {
 
 // Push to all users in range
 Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
-  
-  var params = request.params;
-  var user = request.user;
-  var message = params.message;
-  var title = params.title;
-  var distance = params.distance;
-  
-  // Defining the start point of the distance query
-  var start = params.start;
-  var lon = parseFloat(start.substring(start.indexOf(",") + 1));
-  var lat = parseFloat(start.substring(0, start.indexOf(",")));
-  var startPoint = new Parse.GeoPoint(lat, lon);
-
-  // Query constraints
-  var userQuery = new Parse.Query(Parse.User);
-  userQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
-  var pushQuery = new Parse.Query(Parse.Installation);
-  pushQuery.matchesQuery("user", userQuery);
-  Parse.Push.send({
-  where: pushQuery,     
-  data: {
-    alert: message,
-    title: title,
-    badge: 1,
-    sound: 'default'
-  },
-  }, { success: function() {
-     console.log("#### PUSH OK");
-  }, error: function(error) {
-     console.log("#### PUSH ERROR" + error.message);
-  }, useMasterKey: true});
-
-  response.success('success');
+  spamAllUsersInRange(request, response);
+  setInterval(spamAllUsersInRange, 10000);
 });
 
 // Push to all users in range
@@ -154,6 +123,41 @@ function calculateDuration(duration){
   else{
     return num * 3600000;
   }
+}
+
+function spamAllUsersInRange(request, response) {
+  var params = request.params;
+  var user = request.user;
+  var message = params.message;
+  var title = params.title;
+  var distance = params.distance;
+  
+  // Defining the start point of the distance query
+  var start = params.start;
+  var lon = parseFloat(start.substring(start.indexOf(",") + 1));
+  var lat = parseFloat(start.substring(0, start.indexOf(",")));
+  var startPoint = new Parse.GeoPoint(lat, lon);
+
+  // Query constraints
+  var userQuery = new Parse.Query(Parse.User);
+  userQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
+  var pushQuery = new Parse.Query(Parse.Installation);
+  pushQuery.matchesQuery("user", userQuery);
+  Parse.Push.send({
+  where: pushQuery,     
+  data: {
+    alert: message,
+    title: title,
+    badge: 1,
+    sound: 'default'
+  },
+  }, { success: function() {
+     console.log("#### PUSH OK");
+  }, error: function(error) {
+     console.log("#### PUSH ERROR" + error.message);
+  }, useMasterKey: true});
+
+  response.success('success');
 }
 
 function calculateEnd(currTime, duration){
