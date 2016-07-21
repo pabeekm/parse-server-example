@@ -77,9 +77,8 @@ Parse.Cloud.define('scheduleNeutralEvent', function(request, response) {
   }).on('failed', function(result) {
   });
   jobs.process('neutral_job', function(job, done) {
-    var userQuery = new Parse.Query(Parse.User);
-    userQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
     var pushQuery = new Parse.Query(Parse.Installation);
+    pushQuery.equalTo("deviceType", "android");
     pushQuery.matchesQuery("user", userQuery);
     Parse.Push.send({
     where: pushQuery,     
