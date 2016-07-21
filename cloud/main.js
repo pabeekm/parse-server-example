@@ -74,12 +74,26 @@ Parse.Cloud.define('scheduleNeutralEvent', function(request, response) {
   var jobs = kue.createQueue();
   var job = jobs.create('neutral_job').delay(parseFloat(duration)).save();
   job.on('complete', function(result) {
-    console.log("SUCCESS " + job.id);
   }).on('failed', function(result) {
-    console.log("FAILED " + job.id);
   });
   jobs.process('neutral_job', function(job, done) {
-    
+    var userQuery = new Parse.Query(Parse.User);
+    userQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
+    var pushQuery = new Parse.Query(Parse.Installation);
+    pushQuery.matchesQuery("user", userQuery);
+    Parse.Push.send({
+    where: pushQuery,     
+    data: {
+    alert: "test",
+    title: "test",
+    badge: 1,
+    sound: 'default'
+  },
+  }, { success: function() {
+     console.log("#### PUSH OK");
+  }, error: function(error) {
+     console.log("#### PUSH ERROR" + error.message);
+  }, useMasterKey: true});
   });
   response.success('success');
 });
