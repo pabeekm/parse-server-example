@@ -69,7 +69,6 @@ Parse.Cloud.define('scheduleNeutralEvent', function(request, response) {
   var params = request.params;
   var user = request.user;
   var duration = params.duration;
-  var kue = require('kue');
   // create our job queue
   var jobs = kue.createQueue();
   var job = jobs.create('neutral_job').delay(parseFloat(duration)).save();
