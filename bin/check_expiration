@@ -1,4 +1,8 @@
-#! /app/bin/node
+var Parse = require('parse/node');
+Parse.initialize('FBUDisturb', '', 'masterKey');
+Parse.serverURL = 'http://fbudisturb.herokuapp.com/parse';
+Parse.Cloud.useMasterKey();
+
 function spamAllUsers() {
 
   // Query constraints
