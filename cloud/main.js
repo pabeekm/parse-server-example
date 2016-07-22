@@ -67,19 +67,20 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   // Save the set of alerted users in the event
   eventQuery.get( eventId, {
     success: function(object) {
-      var users = [];
+     // var users = [];
       //object.save();
       userQuery.each({
         success: function (result) {
-          users.add(result.getObjectId());
+          object.add("alertedUsers", result.getObjectId());
+          object.save();
         },
         error: function (error) {
           alert("Error: " + error.code + " " + error.message);
         }
       }, {useMasterKey: true});
       
-      object.add("alertedUsers", users);
-      object.save();
+      //object.addAll("alertedUsers", users);
+     // object.save();
       
     },
     error: function(error){
