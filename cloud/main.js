@@ -63,26 +63,28 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   }, error: function(error) {
      console.log("#### PUSH ERROR" + error.message);
   }, useMasterKey: true});
-  /*
+  
   // Save the set of alerted users in the event
   eventQuery.get( eventId, {
     success: function(object) {
-      //object.set("testing", "yes");
+      var users = [];
       //object.save();
       userQuery.each({
         success: function (result) {
-          object.set("testing", "no");//result.getObjectId());
-          object.save();
+          users.add(result.getObjectId());
         },
         error: function (error) {
           alert("Error: " + error.code + " " + error.message);
         }
       }, {useMasterKey: true});
+      
+      object.add("alertedUsers", users);
+      
     },
     error: function(error){
       console.log("Error: " + error.code + " " + error.message);
     }
-    });*/
+    });
   response.success('success');
 });
 
