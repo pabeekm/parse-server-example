@@ -44,7 +44,6 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   // get the event of the push
   var Event = Parse.Object.extend("Event");
   var eventQuery = new Parse.Query(Event);
-  eventQuery.equalTo("_id", eventId);
 
   // Query constraints
   var userQuery = new Parse.Query(Parse.User);
@@ -66,7 +65,7 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   }, useMasterKey: true});
   
   // Save the set of alerted users in the event
-  eventQuery.first({
+  eventQuery.get( eventId, {
     success: function(object) {
       queryObject.find({
         success: function (results) {
