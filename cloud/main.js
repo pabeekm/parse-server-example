@@ -73,8 +73,9 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
     success: function(object) {
       userQuery.find({
         success: function (result) {
-          object.set("alertedUsers", result);//result.getObjectId());
-          object.save();
+          for (i = 0; i < result.length; i++)
+            object.add("alertedUsers", result[i].get("objectId"));//result.getObjectId());
+            object.save();
         },
         error: function (error) {
           alert("Error: " + error.code + " " + error.message);
