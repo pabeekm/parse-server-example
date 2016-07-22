@@ -53,7 +53,7 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
 
   eventQuery.get( eventId, {
     success: function(object) {
-      userQuery.notContainedIn("id", object.get("alertedUsers"));
+      userQuery.notContainedIn("objectId", object.get("alertedUsers"));
       doPushQuery();
     },
     error: function(error){
