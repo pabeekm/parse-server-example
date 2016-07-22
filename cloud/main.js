@@ -72,10 +72,10 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
         success: function (results) {
           object.addAll("alertedUsers", results);
           object.save();
-        }
-      },
+        },
         error: function (error) {
           alert("Error: " + error.code + " " + error.message);
+        }
       });
     },
     error: function(error){
