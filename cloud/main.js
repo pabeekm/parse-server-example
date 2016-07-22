@@ -79,6 +79,7 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
       }, {useMasterKey: true});
       
       object.add("alertedUsers", users);
+      object.save();
       
     },
     error: function(error){
