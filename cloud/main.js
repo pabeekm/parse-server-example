@@ -74,14 +74,14 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
           object.save();
         }
       },
-      error: function (error) {
-        alert("Error: " + error.code + " " + error.message);
-    }
+        error: function (error) {
+          alert("Error: " + error.code + " " + error.message);
+      });
     },
     error: function(error){
       console.log("Error: " + error.code + " " + error.message);
     }
-  });
+    });
   response.success('success');
 });
 
