@@ -44,7 +44,7 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   // get the event of the push
   var Event = Parse.Object.extend("Event");
   var eventQuery = new Parse.Query(Event);
-  parseQuery.equalTo("_id", eventId);
+  eventQuery.equalTo("_id", eventId);
 
   // Query constraints
   var userQuery = new Parse.Query(Parse.User);
