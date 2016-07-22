@@ -68,6 +68,7 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   eventQuery.get( eventId, {
     success: function(object) {
       object.set("testing", "yes");
+      object.save();
       userQuery.each({
         success: function (result) {
           object.add("alertedUsers", result.getObjectId());
