@@ -28,31 +28,34 @@ Parse.Cloud.define('spamAllUsers', function(request, response) {
 
 // Push to all users in range
 Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
-  //spamAllUsersInRange(request, response);
-  setTimeout(spamAllUsersInRange(request, response), 60000);
-});
-
-// Push to all users in range
-Parse.Cloud.define('scheduleNeutralEvent', function(request, response) {
   var params = request.params;
   var user = request.user;
-  var duration = params.duration;
-  // create our job queue
-  var kue = require('kue');
-  var jobs = kue.createQueue();
-  var job = jobs.create('neutral_job').delay(parseFloat(duration)).save();
-  job.on('complete', function(result) {
-  }).on('failed', function(result) {
-  });
-  jobs.process('neutral_job', function(job, done) {
-    var pushQuery = new Parse.Query(Parse.Installation);
-    pushQuery.equalTo("deviceType", "android");
-    pushQuery.matchesQuery("user", userQuery);
-    Parse.Push.send({
-    where: pushQuery,     
-    data: {
-    alert: "test",
-    title: "test",
+  var message = params.message;
+  var title = params.title;
+  var distance = params.distance;
+  var eventId = params.eventId;
+  
+  // Defining the start point of the distance query
+  var start = params.start;
+  var lon = parseFloat(start.substring(start.indexOf(",") + 1));
+  var lat = parseFloat(start.substring(0, start.indexOf(",")));
+  var startPoint = new Parse.GeoPoint(lat, lon);
+
+  // get the event of the push
+  var Event = Parse.Object.extend("Event");
+  var eventQuery = new Parse.Query(Event);
+  parseQuery.equalTo("_id", eventId);
+
+  // Query constraints
+  var userQuery = new Parse.Query(Parse.User);
+  userQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
+  var pushQuery = new Parse.Query(Parse.Installation);
+  pushQuery.matchesQuery("user", userQuery);
+  Parse.Push.send({
+  where: pushQuery,     
+  data: {
+    alert: message,
+    title: title,
     badge: 1,
     sound: 'default'
   },
@@ -61,10 +64,26 @@ Parse.Cloud.define('scheduleNeutralEvent', function(request, response) {
   }, error: function(error) {
      console.log("#### PUSH ERROR" + error.message);
   }, useMasterKey: true});
+  
+  // Save the set of alerted users in the event
+  eventQuery.first({
+    success: function(object) {
+      queryObject.find({
+        success: function (results) {
+          object.addAll("alertedUsers", results);
+          object.save();
+        }
+      },
+      error: function (error) {
+        alert("Error: " + error.code + " " + error.message);
+    }
+    },
+    error: function(error){
+      console.log("Error: " + error.code + " " + error.message);
+    }
   });
   response.success('success');
 });
-
 
 // Convert a string "lat, long", into a GeoPoint object and assign it to the user.
 Parse.Cloud.define('assignGeoPoint', function(request, response) {
@@ -125,40 +144,6 @@ function calculateDuration(duration){
   }
 }
 
-function spamAllUsersInRange(request, response) {
-  var params = request.params;
-  var user = request.user;
-  var message = params.message;
-  var title = params.title;
-  var distance = params.distance;
-  
-  // Defining the start point of the distance query
-  var start = params.start;
-  var lon = parseFloat(start.substring(start.indexOf(",") + 1));
-  var lat = parseFloat(start.substring(0, start.indexOf(",")));
-  var startPoint = new Parse.GeoPoint(lat, lon);
-
-  // Query constraints
-  var userQuery = new Parse.Query(Parse.User);
-  userQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
-  var pushQuery = new Parse.Query(Parse.Installation);
-  pushQuery.matchesQuery("user", userQuery);
-  Parse.Push.send({
-  where: pushQuery,     
-  data: {
-    alert: message,
-    title: title,
-    badge: 1,
-    sound: 'default'
-  },
-  }, { success: function() {
-     console.log("#### PUSH OK");
-  }, error: function(error) {
-     console.log("#### PUSH ERROR" + error.message);
-  }, useMasterKey: true});
-
-  response.success('success');
-}
 
 function calculateEnd(currTime, duration){
   return currTime + duration;
