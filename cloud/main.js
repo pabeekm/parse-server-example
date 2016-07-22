@@ -44,19 +44,10 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   // get the event of the push
   var Event = Parse.Object.extend("Event");
   var eventQuery = new Parse.Query(Event);
-  var users = [];
   
   // Query constraints
   var userQuery = new Parse.Query(Parse.User);
   userQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
-  userQuery.each({
-    success: function (result) {
-       users.add(result.getObjectId());
-    },
-    error: function (error) {
-     alert("Error: " + error.code + " " + error.message);
-   }
-  }, {useMasterKey: true});
   
   var pushQuery = new Parse.Query(Parse.Installation);
   pushQuery.matchesQuery("user", userQuery);
@@ -75,12 +66,21 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
      console.log("#### PUSH ERROR" + error.message);
   }, useMasterKey: true});
   
+  userQuery = new Parse.Query(Parse.User);
+  userQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
   // Save the set of alerted users in the event
   eventQuery.get( eventId, {
     success: function(object) {
-      object.addAll("alertedUsers", users);
-      object.save();
-      
+      userQuery.each({
+        success: function (result) {
+          object.add("alertedUsers", result.getObjectId());
+          object.set("testing", "no");
+          object.save();
+        },
+        error: function (error) {
+          alert("Error: " + error.code + " " + error.message);
+        }
+      }, {useMasterKey: true});
     },
     error: function(error){
       console.log("Error: " + error.code + " " + error.message);
