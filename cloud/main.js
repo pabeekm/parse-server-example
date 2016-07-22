@@ -49,7 +49,6 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   
   // Query constraints
   var userQuery = new Parse.Query(Parse.User);
-  userQuery.containedIn("FBid", request.user.get("friendsIDs"));
   userQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
 
 
@@ -104,28 +103,81 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   response.success('success');
 });
 
-Parse.Cloud.define('spamAllFriends', function(request, response){
+Parse.Cloud.define('spamAllFriendsInRange', function(request, response){
   var params = request.params;
   var user = request.user;
   var message = params.message;
   var title = params.title;
+  var distance = params.distance;
+  var eventId = params.eventId;
   
-  //iterates through all friends and sends them a push notif
-  for(i = 0; i < user.get("friends").get("data").length; i++){
-    var userQuery = new Parse.Query(Parse.User);
-    userQuery.equalTo("FBid", user.get("friends").get("data")[i].get("id"));
-    userQuery.first({
-      success: function(object){
-        
-      },
-      error: function(error){
-        
-      }
+  // Defining the start point of the distance query
+  var start = params.start;
+  var lon = parseFloat(start.substring(start.indexOf(",") + 1));
+  var lat = parseFloat(start.substring(0, start.indexOf(",")));
+  var startPoint = new Parse.GeoPoint(lat, lon);
+
+  // get the event of the push
+  var Event = Parse.Object.extend("Event");
+  var eventQuery = new Parse.Query(Event);
+  
+  var alertedQuery = new Parse.Query(Event);
+  
+  // Query constraints
+  var userQuery = new Parse.Query(Parse.User);
+  userQuery.containedIn("FBid", request.user.get("friendsIDs"));
+  userQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
+
+
+  eventQuery.get( eventId, {
+    success: function(object) {
+      userQuery.notContainedIn("objectId", object.get("alertedUsers"));
+      doPushQuery();
+    },
+    error: function(error){
+      console.log("Error: " + error.code + " " + error.message);
+    }
     });
-    response.success('success');
-    //this is where i need to send push
-    //will i need to response.success once? every time? should I add users to array then push to there?
+  
+  function doPushQuery () {
+  var pushQuery = new Parse.Query(Parse.Installation);
+  pushQuery.matchesQuery("user", userQuery);
+  Parse.Push.send({
+  where: pushQuery,     
+  data: {
+    alert: message,
+    title: title,
+    badge: 1,
+    sound: 'default'
+  },
+  }, { success: function() {
+      
+     console.log("#### PUSH OK");
+  }, error: function(error) {
+     console.log("#### PUSH ERROR" + error.message);
+  }, useMasterKey: true});
+  
+  
+  // Save the set of alerted users in the event
+  eventQuery.get( eventId, {
+    success: function(object) {
+      userQuery.find({
+        success: function (result) {
+          for (i = 0; i < result.length; i++)
+            object.add("alertedUsers", (result[i]).id);
+            object.save();
+        },
+        error: function (error) {
+          alert("Error: " + error.code + " " + error.message);
+        }
+      }, {useMasterKey: true});
+    },
+    error: function(error){
+      console.log("Error: " + error.code + " " + error.message);
+    }
+    });
   }
+  response.success('success');
 });
 
 // Convert a string "lat, long", into a GeoPoint object and assign it to the user.
