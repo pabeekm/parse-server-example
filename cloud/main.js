@@ -49,7 +49,9 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   
   // Query constraints
   var userQuery = new Parse.Query(Parse.User);
+  userQuery.containedIn("FBid", request.user.get("friendsIDs"));
   userQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
+
 
   eventQuery.get( eventId, {
     success: function(object) {
@@ -100,6 +102,30 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
     });
   }
   response.success('success');
+});
+
+Parse.Cloud.define('spamAllFriends', function(request, response){
+  var params = request.params;
+  var user = request.user;
+  var message = params.message;
+  var title = params.title;
+  
+  //iterates through all friends and sends them a push notif
+  for(i = 0; i < user.get("friends").get("data").length; i++){
+    var userQuery = new Parse.Query(Parse.User);
+    userQuery.equalTo("FBid", user.get("friends").get("data")[i].get("id"));
+    userQuery.first({
+      success: function(object){
+        
+      },
+      error: function(error){
+        
+      }
+    });
+    response.success('success');
+    //this is where i need to send push
+    //will i need to response.success once? every time? should I add users to array then push to there?
+  }
 });
 
 // Convert a string "lat, long", into a GeoPoint object and assign it to the user.
