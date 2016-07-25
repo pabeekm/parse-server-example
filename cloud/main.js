@@ -277,7 +277,6 @@ function neutralizeEventIfExpired(eventId) {
 	  },
 	  error: function(error){
 	    console.log("Error: " + error.code + " " + error.message);
-      return false;
 	  }
 	});
 }
