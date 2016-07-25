@@ -11,8 +11,8 @@ Parse.Cloud.define('spamAllUsers', function(request, response) {
   Parse.Push.send({
   where: pushQuery,     
   data: {
-    alert: message,
-    title: title,
+    alert: "",
+    title: "",
     badge: 1,
     sound: 'default',
     eventID: enventId,
