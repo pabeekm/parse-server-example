@@ -35,6 +35,10 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   var distance = params.distance;
   var eventId = params.eventId;
   
+  if (neutralizeEventIfExpired(eventId)) {
+    return;
+  }
+  
   // Defining the start point of the distance query
   var start = params.start;
   var lon = parseFloat(start.substring(start.indexOf(",") + 1));
