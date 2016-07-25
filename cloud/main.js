@@ -35,9 +35,9 @@ Parse.Cloud.define('spamAllUsersInRange', function(request, response) {
   var distance = params.distance;
   var eventId = params.eventId;
   
-  if (neutralizeEventIfExpired(eventId)) {
+ /* if (neutralizeEventIfExpired(eventId)) {
     return;
-  }
+  }*/
   
   // Defining the start point of the distance query
   var start = params.start;
@@ -115,9 +115,9 @@ Parse.Cloud.define('spamAllFriendsInRange', function(request, response){
   var distance = params.distance;
   var eventId = params.eventId;
   
-  if (neutralizeEventIfExpired(eventId)) {
+ /* if (neutralizeEventIfExpired(eventId)) {
     return;
-  }
+  }*/
   
   // Defining the start point of the distance query
   var start = params.start;
