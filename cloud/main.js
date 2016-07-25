@@ -111,6 +111,10 @@ Parse.Cloud.define('spamAllFriendsInRange', function(request, response){
   var distance = params.distance;
   var eventId = params.eventId;
   
+  if (neutralizeEventIfExpired(eventId)) {
+    return;
+  }
+  
   // Defining the start point of the distance query
   var start = params.start;
   var lon = parseFloat(start.substring(start.indexOf(",") + 1));
@@ -226,7 +230,14 @@ Parse.Cloud.define("getEndTime", function(request, response) {
 });
 
 Parse.Cloud.define("setTimeLeft", function(request, response){
-  var params = request.params
+  var params = request.params;
+});
+
+Parse.Cloud.define("neutralize", function(request, response){
+  var params = request.params;
+  var eventId = params.eventId;
+  neutralizeEventIfExpired(eventId);
+  response.success("success");
 });
 
 function calculateDuration(duration){
@@ -247,4 +258,26 @@ function calculateEnd(currTime, duration){
 function millisToMin(endTime, currTime){
   var timeLeft = endTime - currTime;
   return timeLeft / 60000;
+}
+
+function neutralizeEventIfExpired(eventId) {
+  var Event = Parse.Object.extend("Event");
+  var eventQuery = new Parse.Query(Event);
+  eventQuery.get( eventId, {
+	  success: function(object) {
+	    if (object.get("endTime") < Date.now()) {
+	      object.set("Location", "None");
+	      object.set("Message", "None");
+	      object.set("Disturb", "Neutral");
+	      object.set("alertedUsers", []);
+	      object.save();
+	      return true;
+	    }
+	    return false;
+	  },
+	  error: function(error){
+	    console.log("Error: " + error.code + " " + error.message);
+      return false;
+	  }
+	});
 }
