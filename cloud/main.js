@@ -15,7 +15,7 @@ Parse.Cloud.define('spamAllUsers', function(request, response) {
     title: title,
     badge: 1,
     sound: 'default',
-    eventID: enventId
+    eventID: enventId,
     override: false
   },
   }, { success: function() {
