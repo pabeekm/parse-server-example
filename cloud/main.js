@@ -3,8 +3,7 @@ Parse.Cloud.define('spamAllUsers', function(request, response) {
 
   var params = request.params;
   var user = request.user;
-  var message = params.message;
-  var title = params.title;
+  var eventId = params.eventId;
 
   // Query constraints
   var pushQuery = new Parse.Query(Parse.Installation);
@@ -15,14 +14,15 @@ Parse.Cloud.define('spamAllUsers', function(request, response) {
     alert: message,
     title: title,
     badge: 1,
-    sound: 'default'
+    sound: 'default',
+    eventID: enventId
+    override: false
   },
   }, { success: function() {
      console.log("#### PUSH OK");
   }, error: function(error) {
      console.log("#### PUSH ERROR" + error.message);
   }, useMasterKey: true});
-
   response.success('success');
 });
 
@@ -242,6 +242,44 @@ Parse.Cloud.define("neutralize", function(request, response){
   var eventId = params.eventId;
   neutralizeEventIfExpired(eventId);
   response.success("success");
+});
+
+Parse.Cloud.define('spamMyself', function(request, response) {
+  var params = request.params;
+  var user = request.user;
+  var eventId = params.eventId;
+  
+  var Event = Parse.Object.extend("Event");
+  var eventQuery = new Parse.Query(Event);
+   eventQuery.get( eventId, {
+    success: function(object) {
+        doPushQuery(object.get("Name"), onject.get("Message"));
+    },
+    error: function(error){
+      console.log("Error: " + error.code + " " + error.message);
+    }
+    });
+  response.success('success');
+  
+  function doPushQuery (title, message) {
+  	// Query constraints
+  	var pushQuery = new Parse.Query(Parse.User);
+    pushQuery.equalTo("objectId", user.getObjectId());
+    Parse.Push.send({
+      where: pushQuery,     
+      data: {
+      alert: message,
+      title: title,
+      badge: 1,
+      sound: 'default',
+      override: true
+    },
+    }, { success: function() {
+      console.log("#### PUSH OK");
+    }, error: function(error) {
+      console.log("#### PUSH ERROR" + error.message);
+    }, useMasterKey: true});
+  }
 });
 
 function calculateDuration(duration){
