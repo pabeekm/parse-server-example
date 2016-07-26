@@ -244,35 +244,35 @@ Parse.Cloud.define("neutralize", function(request, response){
   response.success("success");
 });
 
-Parse.Cloud.define('spamMyself', function(request, response) {
+Parse.Cloud.define("spamMyself", function(request, response) {
   var params = request.params;
   var user = request.user;
   var eventId = params.eventId;
+  var userId = params.userId;
   
   var Event = Parse.Object.extend("Event");
   var eventQuery = new Parse.Query(Event);
   eventQuery.get( eventId, {
     success: function(object) {
-        doPushQuery(object.get("Name"), object.get("Message"), user);
+        doPushQuery2(object.get("Name"), object.get("Message"));
     },
     error: function(error){
       console.log("Error: " + error.code + " " + error.message);
     }
   });
-  response.success('success');
   
-  function doPushQuery(title, message, user) {
+  function doPushQuery2(title2, message2) {
     // Query constraints
     var pushQuery = new Parse.Query(Parse.User);
-    pushQuery.equalTo("objectId", user.getObjectId());
+    pushQuery.equalTo("objectId", userId);
     Parse.Push.send({
       where: pushQuery,     
       data: {
-      alert: message,
-      title: title,
-      badge: 1,
-      sound: 'default',
-      override: true
+      	alert: message2,
+      	title: title2,
+      	badge: 1,
+      	sound: 'default',
+      	override: true
       },
     }, { success: function() {
       console.log("#### PUSH OK");
@@ -280,6 +280,8 @@ Parse.Cloud.define('spamMyself', function(request, response) {
       console.log("#### PUSH ERROR" + error.message);
     }, useMasterKey: true});
   }
+  
+  response.success('success');
   
 });
 
