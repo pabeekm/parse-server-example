@@ -263,8 +263,10 @@ Parse.Cloud.define("spamMyself", function(request, response) {
   
   function doPushQuery2(title2, message2) {
     // Query constraints
-    var pushQuery = new Parse.Query(Parse.User);
-    pushQuery.equalTo("objectId", userId);
+    var userQuery = new Parse.Query(Parse.User);
+    userQuery.equalTo("objectId", userId);
+    var pushQuery = new Parse.Query(Parse.Installation);
+    pushQuery.matchesQuery("user", userQuery);
     Parse.Push.send({
       where: pushQuery,     
       data: {
