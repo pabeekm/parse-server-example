@@ -253,7 +253,7 @@ Parse.Cloud.define('spamMyself', function(request, response) {
   var eventQuery = new Parse.Query(Event);
    eventQuery.get( eventId, {
     success: function(object) {
-        doPushQuery(object.get("Name"), onject.get("Message"));
+        doPushQuery(object.get("Name"), object.get("Message"));
     },
     error: function(error){
       console.log("Error: " + error.code + " " + error.message);
