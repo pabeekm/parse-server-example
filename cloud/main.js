@@ -137,7 +137,7 @@ Parse.Cloud.define('spamAllFriendsInRange', function(request, response){
   userQuery.withinMiles("geoPoint", startPoint, parseInt(distance));
 
 
-  eventQuery.get( eventId, {
+  eventQuery.find({
     success: function(object) {
       userQuery.notContainedIn("objectId", object.get("alertedUsers"));
       doPushQuery();
