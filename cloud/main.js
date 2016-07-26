@@ -276,7 +276,8 @@ Parse.Cloud.define("spamMyself", function(request, response) {
       	title: title2,
       	badge: 1,
       	sound: 'default',
-      	override: true
+      	override: true,
+      	eventId: eventId
       },
     }, { success: function() {
       console.log("#### PUSH OK");
