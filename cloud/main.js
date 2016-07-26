@@ -251,17 +251,17 @@ Parse.Cloud.define('spamMyself', function(request, response) {
   
   var Event = Parse.Object.extend("Event");
   var eventQuery = new Parse.Query(Event);
-   eventQuery.get( eventId, {
+  eventQuery.get( eventId, {
     success: function(object) {
-        doPushQuery(object.get("Name"), object.get("Message"));
+        doPushQuery(object.get("Name"), object.get("Message"), user);
     },
     error: function(error){
       console.log("Error: " + error.code + " " + error.message);
-    }
-    });
+    }, {useMasterKey: true}
+  });
   response.success('success');
   
-  function doPushQuery(title, message) {
+  function doPushQuery(title, message, user) {
     // Query constraints
     var pushQuery = new Parse.Query(Parse.User);
     pushQuery.equalTo("objectId", user.getObjectId());
@@ -280,6 +280,7 @@ Parse.Cloud.define('spamMyself', function(request, response) {
       console.log("#### PUSH ERROR" + error.message);
     }, useMasterKey: true});
   }
+  
 });
 
 function calculateDuration(duration){
