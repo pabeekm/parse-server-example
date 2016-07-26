@@ -262,8 +262,8 @@ Parse.Cloud.define('spamMyself', function(request, response) {
   response.success('success');
   
   function doPushQuery (title, message) {
-  	// Query constraints
-  	var pushQuery = new Parse.Query(Parse.User);
+    // Query constraints
+    var pushQuery = new Parse.Query(Parse.User);
     pushQuery.equalTo("objectId", user.getObjectId());
     Parse.Push.send({
       where: pushQuery,     
@@ -273,7 +273,7 @@ Parse.Cloud.define('spamMyself', function(request, response) {
       badge: 1,
       sound: 'default',
       override: true
-    },
+      }
     }, { success: function() {
       console.log("#### PUSH OK");
     }, error: function(error) {
