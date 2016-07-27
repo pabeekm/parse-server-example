@@ -4,6 +4,10 @@ Parse.Cloud.define('spamAllUsers', function(request, response) {
   var params = request.params;
   var user = request.user;
   var eventId = params.eventId;
+  var removal = false;
+  if (params.remove === ("true")) {
+  	removal = true;
+  }
 
   // Query constraints
   var userQuery = new Parse.Query(Parse.User);
@@ -19,7 +23,7 @@ Parse.Cloud.define('spamAllUsers', function(request, response) {
     sound: 'default',
     eventID: eventId,
     override: false,
-    remove: false
+    remove: removal
   },
   }, { success: function() {
      console.log("#### PUSH OK");
