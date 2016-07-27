@@ -5,7 +5,7 @@ Parse.Cloud.define('spamAllUsers', function(request, response) {
   var user = request.user;
   var eventId = params.eventId;
   var removal = false;
-  if (params.remove === ("true")) {
+  if (params.removal === ("true")) {
   	removal = true;
   }
 
