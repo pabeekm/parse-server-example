@@ -350,12 +350,15 @@ Parse.Cloud.define("neutralizeEventIfExpired", function(request, response)  {
 	      object.set("Message", "None");
 	      object.set("Disturb", "Neutral");
 	      object.save();
+	      response.success('success');
 	      return true;
 	    }
+	    response.success('success');
 	    return false;
 	  },
 	  error: function(error){
 	    console.log("Error: " + error.code + " " + error.message);
 	  }
 	});
+	response.success('success');
 });
