@@ -13,8 +13,7 @@ Parse.Cloud.define('spamAllUsers', function(request, response) {
   var userQuery = new Parse.Query(Parse.User);
   userQuery.containedIn("FBid", request.user.get("friendsIDs"));
   var pushQuery = new Parse.Query(Parse.Installation);
-  //pushQuery.matchesQuery("user", userQuery);
-  pushQuery.equalTo("deviceType", "android");
+  pushQuery.matchesQuery("user", userQuery);
   Parse.Push.send({
   where: pushQuery,     
   data: {
