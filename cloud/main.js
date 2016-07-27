@@ -18,7 +18,8 @@ Parse.Cloud.define('spamAllUsers', function(request, response) {
     badge: 1,
     sound: 'default',
     eventID: eventId,
-    override: false
+    override: false,
+    remove: false
   },
   }, { success: function() {
      console.log("#### PUSH OK");
@@ -277,7 +278,8 @@ Parse.Cloud.define("spamMyself", function(request, response) {
       	badge: 1,
       	sound: 'default',
       	override: true,
-      	eventID: eventId
+      	eventID: eventId,
+      	remove: false
       },
     }, { success: function() {
       console.log("#### PUSH OK");
