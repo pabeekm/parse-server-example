@@ -214,7 +214,6 @@ Parse.Cloud.define("getServerTime", function(request, response) {
     var params = request.params;
     var user = request.user;
     user.set("currTime", Date.now());
-    response.success("success");
     return Date.now();
 });
 
