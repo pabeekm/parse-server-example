@@ -336,3 +336,26 @@ function neutralizeEventIfExpired(eventId) {
 	  }
 	});
 }
+
+Parse.Cloud.define("neutralizeEventIfExpired", function(request, response)  {
+	var params = request.params;
+  var user = request.user;
+  var eventId = params.eventId;
+  var Event = Parse.Object.extend("Event");
+  var eventQuery = new Parse.Query(Event);
+  eventQuery.get( eventId, {
+	  success: function(object) {
+	    if (object.get("endTime") < Date.now()) {
+	      object.set("Location", "None");
+	      object.set("Message", "None");
+	      object.set("Disturb", "Neutral");
+	      object.save();
+	      return true;
+	    }
+	    return false;
+	  },
+	  error: function(error){
+	    console.log("Error: " + error.code + " " + error.message);
+	  }
+	});
+});
